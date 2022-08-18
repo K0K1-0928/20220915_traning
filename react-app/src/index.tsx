@@ -5,10 +5,24 @@ import './index.css';
 type Props = {
   value: number;
 };
+type State = {
+  value: string | null;
+};
 
-class Square extends React.Component<Props, Record<string, unknown>> {
+class Square extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      value: null,
+    };
+  }
+
   render(): JSX.Element {
-    return <button className="square">{this.props.value}</button>;
+    return (
+      <button className="square" onClick={() => this.setState({ value: 'X' })}>
+        {this.state.value}
+      </button>
+    );
   }
 }
 
