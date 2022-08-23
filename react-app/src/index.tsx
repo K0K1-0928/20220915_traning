@@ -2,22 +2,24 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
-type Value = string | null;
+type SquareValue = 'X' | 'O' | null;
 interface Props {
-  value: Value;
-  squares: Value[];
-  onClick(i: number): void;
-  // onClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
+  value: SquareValue;
+  squares: Array<SquareValue>;
 }
 interface State {
-  value: Value;
-  squares: Value[];
-  history: { squares: Value[] }[];
+  value: SquareValue;
+  squares: Array<SquareValue>;
+  history: Array<{ squares: Array<SquareValue> }>;
   stepNumber: number;
   xIsNext: boolean;
 }
 
-function Square(props: Pick<Props, 'value' | 'onClick'>) {
+type SquareProps = Pick<Props, 'value'> & {
+  onClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
+};
+
+function Square(props: SquareProps) {
   return (
     <button className="square" onClick={props.onClick}>
       {props.value}
@@ -25,7 +27,12 @@ function Square(props: Pick<Props, 'value' | 'onClick'>) {
   );
 }
 
-class Board extends React.Component<Pick<Props, 'squares' | 'onClick'>, State> {
+type BoardProps = Pick<Props, 'squares'> & {
+  onClick(i: number): void;
+};
+type BoardState = State;
+
+class Board extends React.Component<BoardProps, BoardState> {
   renderSquare(i: number): JSX.Element {
     return (
       <Square
@@ -58,10 +65,10 @@ class Board extends React.Component<Pick<Props, 'squares' | 'onClick'>, State> {
   }
 }
 
-class Game extends React.Component<
-  Partial<Props>,
-  Pick<State, 'history' | 'stepNumber' | 'xIsNext'>
-> {
+type GameProps = Partial<Props>;
+type GameState = Pick<State, 'history' | 'stepNumber' | 'xIsNext'>;
+
+class Game extends React.Component<GameProps, GameState> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -137,7 +144,7 @@ const root: ReactDOM.Root = ReactDOM.createRoot(
 );
 root.render(<Game />);
 
-function calculateWinner(squares: State['squares']): string | null {
+function calculateWinner(squares: State['squares']): SquareValue {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
