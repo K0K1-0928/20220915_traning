@@ -175,5 +175,5 @@ function calculateWinner(
       return [squares[a], lines[i]];
     }
   }
-  return [null, [0]];
+  return [null, [-1]];
 }
