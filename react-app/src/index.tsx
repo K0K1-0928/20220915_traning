@@ -115,8 +115,10 @@ class Game extends React.Component<GameProps, GameState> {
     });
 
     let status;
+    let isGameOver = false;
     if (winner) {
       status = 'Winner: ' + winner;
+      isGameOver = true;
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
@@ -129,7 +131,7 @@ class Game extends React.Component<GameProps, GameState> {
           />
         </div>
         <div className="game-info">
-          <div>{status}</div>
+          <div className={isGameOver ? 'game-over' : ''}>{status}</div>
           <ol>{moves}</ol>
         </div>
       </div>
