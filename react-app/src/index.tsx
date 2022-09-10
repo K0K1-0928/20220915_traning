@@ -17,11 +17,15 @@ interface State {
 
 type SquareProps = Pick<Props, 'value'> & {
   onClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
+  isWin: boolean;
 };
 
 function Square(props: SquareProps) {
   return (
-    <button className="square" onClick={props.onClick}>
+    <button
+      className={`square ${props.isWin ? 'win' : ''}`}
+      onClick={props.onClick}
+    >
       {props.value}
     </button>
   );
@@ -33,11 +37,17 @@ type BoardProps = Pick<Props, 'squares'> & {
 type BoardState = State;
 
 class Board extends React.Component<BoardProps, BoardState> {
+  isWinSquare(i: number): boolean {
+    const [, winLine] = calculateWinner(this.props.squares);
+    return winLine.includes(i);
+  }
+
   renderSquare(i: number): JSX.Element {
     return (
       <Square
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
+        isWin={this.isWinSquare(i)}
       />
     );
   }
@@ -82,7 +92,7 @@ class Game extends React.Component<GameProps, GameState> {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
+    if (calculateWinner(squares)[0] || squares[i]) {
       return;
     }
     squares[i] = this.state.xIsNext ? 'X' : 'O';
@@ -103,7 +113,7 @@ class Game extends React.Component<GameProps, GameState> {
   render(): JSX.Element {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares);
+    const [winner] = calculateWinner(current.squares);
 
     const moves = history.map((step, move) => {
       const desc = move ? 'Go to move #' + move : 'Go to game start';
@@ -131,7 +141,7 @@ class Game extends React.Component<GameProps, GameState> {
           />
         </div>
         <div className="game-info">
-          <div className={isGameOver ? 'game-over' : ''}>{status}</div>
+          <div className={isGameOver ? 'win' : ''}>{status}</div>
           <ol>{moves}</ol>
         </div>
       </div>
@@ -146,7 +156,9 @@ const root: ReactDOM.Root = ReactDOM.createRoot(
 );
 root.render(<Game />);
 
-function calculateWinner(squares: State['squares']): SquareValue {
+function calculateWinner(
+  squares: State['squares']
+): [SquareValue, Array<number>] {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -160,8 +172,8 @@ function calculateWinner(squares: State['squares']): SquareValue {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return [squares[a], lines[i]];
     }
   }
-  return null;
+  return [null, [0]];
 }

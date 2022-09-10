@@ -50,7 +50,7 @@ ul {
   margin-left: 20px;
 }
 
-.game-over {
+.win {
   font-weight: bold;
   color: #ff0000;
 }
