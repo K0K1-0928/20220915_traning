@@ -3,15 +3,15 @@ describe('empty spec', () => {
     cy.visit('/');
   });
 
-  it('passes', () => {
+  it('Next player: X should appear in game-info.', () => {
     cy.get('.game-info > div').first().should('have.text', 'Next player: X');
   });
 
-  it('square', () => {
+  it('If you click on the upper left square', () => {
     cy.get('.square').first().click().should('have.text', 'X');
   });
 
-  it('square-line', () => {
+  it('When 3 squares are aligned', () => {
     cy.get('.square').as('squares');
     for (let i = 0; i < 7; i++) {
       cy.get('@squares').eq(i).click();

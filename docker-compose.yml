@@ -6,3 +6,6 @@ services:
       - '3000:3000'
     volumes:
       - .:/workspace
+    environment:
+      - DISPLAY=${HOST_IP:?err}:0.0
+      - CYPRESS_BASE_URL=http://${HOST_IP:?err}:3000
