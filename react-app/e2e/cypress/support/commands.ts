@@ -23,3 +23,26 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+/// <reference types="cypress" />
+Cypress.Commands.add('dataCy', (selector) => {
+  return cy.get(`[data-cy=${selector}]`);
+});
+Cypress.Commands.add(
+  'shouldHaveText',
+  { prevSubject: 'element' },
+  (subject, text) => {
+    return cy.wrap(subject).should('have.text', text);
+  }
+);
+
+/* eslint-disable @typescript-eslint/no-namespace */
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      dataCy(selector: string): Chainable<JQuery<HTMLElement>>;
+      shouldHaveText(text: string): Chainable<JQuery<HTMLElement>>;
+    }
+  }
+}
+export {};

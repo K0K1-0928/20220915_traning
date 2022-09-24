@@ -25,6 +25,7 @@ function Square(props: SquareProps) {
     <button
       className={`square ${props.isWin ? 'win' : ''}`}
       onClick={props.onClick}
+      data-cy="square"
     >
       {props.value}
     </button>
@@ -141,7 +142,9 @@ class Game extends React.Component<GameProps, GameState> {
           />
         </div>
         <div className="game-info">
-          <div className={isGameOver ? 'win' : ''}>{status}</div>
+          <div className={isGameOver ? 'win' : ''} data-cy="status">
+            {status}
+          </div>
           <ol>{moves}</ol>
         </div>
       </div>
