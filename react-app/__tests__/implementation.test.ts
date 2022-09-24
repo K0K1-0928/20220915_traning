@@ -1,5 +1,7 @@
+import { expect, jest, test } from '@jest/globals';
+
 test('振る舞いの変更', () => {
-  const myMock = jest.fn();
+  const myMock = jest.fn<(arg: string) => number>();
   myMock.mockImplementation((arg: string) => {
     switch (arg) {
       case 'hoge':

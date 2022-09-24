@@ -1,3 +1,4 @@
+import { expect, test } from '@jest/globals';
 import { fetchData } from '../src/fetchData';
 
 test('the data is peaunt butter', () => {

@@ -1,3 +1,5 @@
+import { expect, jest, test } from '@jest/globals';
+
 test('spyon test', () => {
   const video = {
     play() {

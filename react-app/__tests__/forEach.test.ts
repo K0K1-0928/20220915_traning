@@ -1,3 +1,4 @@
+import { expect, jest, test } from '@jest/globals';
 import { forEach } from '../src/forEach';
 
 test('forEachが正しくコールバックすること', () => {
