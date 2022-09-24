@@ -1,9 +1,11 @@
+import { expect, jest, test } from '@jest/globals';
+
 const audio = {
   _volume: 0,
-  set volume(value) {
+  set volume(value: number) {
     this._volume = value;
   },
-  get volume() {
+  get volume(): number {
     return this._volume;
   },
 };
